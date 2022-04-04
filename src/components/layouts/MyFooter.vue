@@ -43,7 +43,7 @@ export default {
 
 <style>
 .footer {
-    margin-top: 250px;
+    margin-top: 350px;
 }
 </style>
 
