@@ -24,42 +24,42 @@
         <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
           <div class="column">
               <a href="/manu" class="image is-128x128">
-                  <img src="../assets/logo/manu.png">
+                  <img src="../assets/logo512/manu.png">
               </a>
               <a href="/manu">Manchester United</a>
           </div>
 
           <div class="column">
               <a href="/liverpool" class="image is-128x128">
-                  <img src="../assets/logo/liverpool.png">
+                  <img src="../assets/logo512/liverpool.png">
                   <a href="/liverpool" class="lp">Liverpool</a>
               </a>
           </div>
 
           <div class="column">
               <a href="/mancity" class="image is-128x128">
-                  <img src="../assets/logo/mancity.png">
+                  <img src="../assets/logo512/mancity.png">
               </a>
             <a href="/mancity" class="ct">Manchester City</a>
           </div>
 
           <div class="column">
               <a href="/realmadrid" class="image is-128x128">
-                  <img src="../assets/logo/realmadrid.png">
+                  <img src="../assets/logo512/realmadrid.png">
               </a>
               <a href="/realmadrid" class="rm">Real Madrid</a>
           </div>
 
           <div class="column">
               <a href="/barcelona" class="image is-128x128">
-                  <img src="../assets/logo/barcelona.png">
+                  <img src="../assets/logo512/barcelona.png">
               </a>
               <a href="/barcelona" class="bc">Barcelona</a>
           </div>
 
           <div class="column">
               <a href="/atmadrid" class="image is-128x128">
-                  <img src="../assets/logo/atmadrid.png">
+                  <img src="../assets/logo512/atmadrid.png">
               </a>
               <a href="/atmadrid">Atletico de Madrid</a>
          </div>

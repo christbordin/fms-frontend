@@ -4,7 +4,7 @@
         <h1 class="title">Real Madrid Players</h1>
         <div class="columns is-mobile is-centered">
             <figure class="image is-96x96">
-                <img src="../../assets/logo/realmadrid.png">
+                <img src="../../assets/logo512/realmadrid.png">
             </figure>
         </div>
         <table id=rmtable class="table is-striped">

@@ -4,7 +4,7 @@
         <h1 class="title">Atletico de Madrid Players</h1>
         <div class="columns is-mobile is-centered">
             <figure class="image is-96x96">
-                <img src="../../assets/logo/atmadrid.png">
+                <img src="../../assets/logo512/atmadrid.png">
             </figure>
         </div>
         <table id=attable class="table is-striped">
@@ -65,8 +65,5 @@ export default {
     }
     .table {
         margin-top: 50px;
-    }
-    .body {
-        background-image: url('../../assets/logo/atmadrid.png') ;
     }
 </style>

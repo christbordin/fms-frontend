@@ -4,7 +4,7 @@
         <h1 class="title">Manchester City Players</h1>
         <div class="columns is-mobile is-centered">
             <figure class="image is-96x96">
-                <img src="../../assets/logo/mancity.png">
+                <img src="../../assets/logo512/mancity.png">
             </figure>
         </div>
         <table id=mctable class="table is-striped">

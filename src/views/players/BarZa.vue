@@ -4,7 +4,7 @@
         <h1 class="title">Barcelona Players</h1>
         <div class="columns is-mobile is-centered">
             <figure class="image is-96x96">
-                <img src="../../assets/logo/barcelona.png">
+                <img src="../../assets/logo512/barcelona.png">
             </figure>
         </div>
         <table id=bctable class="table is-striped">

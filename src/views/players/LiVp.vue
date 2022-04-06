@@ -4,7 +4,7 @@
         <h1 class="title">Liverpool Players</h1>
         <div class="columns is-mobile is-centered">
             <figure class="image is-96x96">
-                <img src="../../assets/logo/liverpool.png">
+                <img src="../../assets/logo512/liverpool.png">
             </figure>
         </div>
         <table id=lptable class="table is-striped">
