@@ -1,23 +1,21 @@
 <template>
-  <div id="app">
+  <div>
     <router-view />
-    <MyFooter />
+    <LeagueFooter />
   </div>
 </template>
+
 <script>
-  import MyFooter from './components/layouts/MyFooter.vue';
-  export default {
-    name: 'app',
-    components: {
-      MyFooter
-    },
-  };
+import LeagueFooter from './components/LeagueFooter.vue';
+export default {
+  name: 'App',
+
+  components: {
+    LeagueFooter,
+  },
+
+  data: () => ({
+    //
+  }),
+};
 </script>
-<style lang="scss">
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-  }
-</style>

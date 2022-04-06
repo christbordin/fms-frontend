@@ -1,4 +1,4 @@
-# fms-front
+# fms-frontend
 
 ## Project setup
 ```

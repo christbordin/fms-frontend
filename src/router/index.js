@@ -1,64 +1,26 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: Home
+    path: "/",
+    name: "home",
+    component: () => import("../views/HomePage.vue"),
   },
   {
-    path: '/team',
-    name: 'team',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/TeamManage.vue')
+    path: "/teamlist/:uid",
+    name: "teamlist",
+    component: () => import("../views/TeamList.vue"),
   },
-  {
-    path: '/atmadrid',
-    name: 'atmadrid',
-    component: () => import('../views/players/AtMad.vue')
-  },
-  {
-    path: '/barcelona',
-    name: 'barcelona',
-    component: () => import('../views/players/BarZa.vue')
-  },
-  {
-    path: '/liverpool',
-    name: 'liverpool',
-    component: () => import('../views/players/LiVp.vue')
-  },
-  {
-    path: '/mancity',
-    name: 'mancity',
-    component: () => import('../views/players/ManCi.vue')
-  },
-  {
-    path: '/manu',
-    name: 'manu',
-    component: () => import('../views/players/ManUN.vue')
-  },
-  {
-    path: '/realmadrid',
-    name: 'realmadrid',
-    component: () => import('../views/players/ReMr.vue')
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/LoginPage.vue')
-  },
-]
+];
 
+// eslint-disable-next-line no-new
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
