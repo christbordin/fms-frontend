@@ -14,6 +14,16 @@ const routes = [
     name: "teamlist",
     component: () => import("../views/TeamList.vue"),
   },
+  {
+    path: "/playerlist/:tid:tname",
+    name: "playerlist",
+    component: () => import("../views/PlayerList.vue"),
+  },
+  {
+    path: "/testloop",
+    name: "testloop",
+    component: () => import("../components/testLoop.vue"),
+  },
 ];
 
 // eslint-disable-next-line no-new

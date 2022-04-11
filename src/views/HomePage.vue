@@ -6,10 +6,10 @@
           Football Management System
         </v-app-bar-title>
       </v-app-bar>
-      <v-content>
+      <v-main>
         <HomeContent />
         <LoginPage />
-      </v-content>
+      </v-main>
     </v-app>
   </div>
 </template>
