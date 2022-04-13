@@ -40,10 +40,10 @@ export default {
 </script>
 
 <style scoped>
-.footer {
-  /* position:static ; */
-  /* bottom: 0; */
+/* .footer {
+  position:static ;
+  bottom: 0;
   margin-top: 337px;
   margin-left: 100px;
-}
+} */
 </style>

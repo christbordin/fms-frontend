@@ -20,9 +20,9 @@ const routes = [
     component: () => import("../views/PlayerList.vue"),
   },
   {
-    path: "/testloop",
-    name: "testloop",
-    component: () => import("../components/testLoop.vue"),
+    path: "/testview/:tid:tname",
+    name: "testview",
+    component: () => import("../components/testView.vue"),
   },
 ];
 

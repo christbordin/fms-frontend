@@ -3,7 +3,7 @@
     <div class="py-12">
       <v-container class="text-center">
         <h2 class="display-2 font-weight-bold mb-3">
-          Football Mangement System
+          Football Management System
         </h2>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
