@@ -14,5 +14,31 @@ export async function getTeams(uid) {
 }
 
 export async function getPlayers(tid) {
-    return await axios.get(`/Players/${tid}/`)
+    return await axios.get(`/Players/${tid}`)
+}
+
+// export async function getOnePlayers(pid) {
+//     return await axios.get(`/oneplayer/${pid}`)
+// }
+
+export async function addNewPlayer(data) {
+    return await axios.post('/addnewplayers', {
+        name: data.name,
+        age: data.age,
+        position: data.position,
+        tid: data.tid
+   })
+}
+
+export async function editplayer(data) {
+    return await axios.patch(`/editplayerinfo/${data.pid}`, {
+        name: data.name,
+        age: data.age,
+        position: data.position,
+        tid: data.tid
+    })
+}
+
+export async function deletePlayer(pid) {
+    return await axios.delete(`/deleteplayer/${pid}`)
 }

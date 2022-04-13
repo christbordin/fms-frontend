@@ -9,7 +9,7 @@
                 <v-list-item-content>
                   <div class="text-overline mb-4" v-text="item.name"></div>
                   <v-list-item-title
-                    class="text-h5 mb-1"
+                    class="d-inline-block text-truncate mb-1"
                     v-text="item.home_stadium"
                   >
                   </v-list-item-title>
