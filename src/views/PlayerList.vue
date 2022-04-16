@@ -43,6 +43,7 @@
                     >
                     <v-card-text>
                       <v-container>
+                        <v-form ref="form" v-model="valid">
                         <v-row>
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
@@ -63,18 +64,21 @@
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.name"
+                              :rules="rules.empty"
                               label="Player Name"
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.age"
+                              :rules="rules.age"
                               label="Age"
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-select
                               v-model="editedItem.position"
+                              :rules="rules.empty"
                               :items="positionList"
                               label="Position"
                             ></v-select>
@@ -88,14 +92,13 @@
                             </template>
                           </v-col>
                         </v-row>
+                        </v-form>
                       </v-container>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="error" text @click="close">
-                        Cancel
-                      </v-btn>
-                      <v-btn color="info" text @click="save(editedItem)">
+                      <v-btn color="error" text @click="close"> Cancel </v-btn>
+                      <v-btn :disabled="!valid" color="info" text @click="save(editedItem)">
                         Save
                       </v-btn>
                     </v-card-actions>
@@ -125,9 +128,7 @@
                 <v-dialog v-model="dialogAlert" persistent max-width="290">
                   <v-card justify="center">
                     <v-card-title class="text-h5"> Alert </v-card-title>
-                    <v-card-text
-                      >Somthing went wrong!</v-card-text
-                    >
+                    <v-card-text>Somthing went wrong!</v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="error" text @click="dialogAlert = false">
@@ -162,7 +163,6 @@
                       </div>
                     </v-sheet>
                   </v-bottom-sheet> -->
-
               </v-toolbar>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
@@ -179,10 +179,7 @@
 </template>
 
 <script>
-import {
-  getPlayers,
-  deletePlayer, addNewPlayer/*, editplayer*/,
-} from "../api";
+import { getPlayers, deletePlayer, addNewPlayer, editplayer } from "../api";
 export default {
   data() {
     return {
@@ -193,6 +190,7 @@ export default {
       dialogAlert: false,
       // alert: false,
       // sheet: false,
+      valid: true,
       editedIndex: -1,
       search: "",
       headers: [
@@ -216,12 +214,11 @@ export default {
         age: "",
         position: "",
       },
-      positionList: [
-        "Goalkeeper",
-        "Defender",
-        "Midfielder",
-        "forward",
-      ],
+      positionList: ["Goalkeeper", "Defender", "Midfielder", "forward"],
+      rules: {
+        empty: [(val) => (val || "").length > 0 || "This field is required"],
+        age: [val => val>0 || 'This field is required']
+      },
     };
   },
 
@@ -231,17 +228,6 @@ export default {
         ? `New Player to ${this.tname}`
         : "Edit Information";
     },
-
-    form () {
-        return {
-          name: this.name,
-          address: this.address,
-          city: this.city,
-          state: this.state,
-          zip: this.zip,
-          country: this.country,
-        }
-      },
   },
 
   watch: {
@@ -273,6 +259,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.$refs.form.reset()
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -280,21 +267,27 @@ export default {
     },
 
     async save(data) {
+      this.$refs.form.validate()
       if (this.editedIndex !== -1) {
-        Object.assign(this.playerList[this.editedIndex], this.editedItem);
-      } else {
-        await addNewPlayer(data).then((res) => {
-          console.log(res.data)
+        await editplayer(data).then((res) => {
           if (res.status === 200) {
-            this.playerList.push(res.data)
-            this.close();
+            Object.assign(this.playerList[this.editedIndex], this.editedItem);
+            this.close()
           }
-        })
-        .catch((err) => {
-          this.close();
-          console.log(err.response.data)
-          this.dialogAlert = true;
         });
+      } else {
+        await addNewPlayer(data)
+          .then((res) => {
+            if (res.status === 200) {
+              this.playerList.push(res.data);
+              this.close();
+            }
+          })
+          .catch((err) => {
+            this.close();
+            console.log(err.response.data);
+            this.dialogAlert = true;
+          });
       }
     },
 
@@ -316,7 +309,7 @@ export default {
         })
         .catch((err) => {
           this.closeDelete();
-          console.log(err.response.data)
+          console.log(err.response.data);
           this.dialogAlert = true;
           // this.alert = true;
           // this.sheet = true;

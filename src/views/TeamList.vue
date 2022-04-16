@@ -28,7 +28,7 @@
               </v-list-item>
 
               <v-card-actions>
-                <v-btn outlined rounded text @click="toPlayerList(item.tid, item.name)"> Player List </v-btn>
+                <v-btn outlined rounded text @click="toPlayerList(item.tid, item.name, item.uid)"> Player List </v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -54,12 +54,13 @@ export default {
     }
   },
 methods:{
-  toPlayerList(tid, tname){
+  toPlayerList(tid, tname, uid){
     this.$router.push({
       name: "playerlist",
       params: {
         tid: tid,
-        tname: tname
+        tname: tname,
+        uid: uid
       },
       // props: {
       //   tname: tname

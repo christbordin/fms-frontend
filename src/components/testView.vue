@@ -234,6 +234,8 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.playerList[this.editedIndex], this.editedItem);
+        console.log('==========>PlayerList',this.playerList)
+        console.log('==========>editItem',this.editedItem)
       } else {
         this.playerList.push(this.editedItem);
       }
