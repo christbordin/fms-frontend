@@ -37,17 +37,33 @@
                   </template>
                   <v-card>
                     <v-card-title
-                      ><span class="text-h5">{{
-                        formTitle
-                      }}</span></v-card-title
+                      ><span class="text-capitalize">
+                        {{ formTitle }}
+                      </span></v-card-title
                     >
                     <v-card-text>
                       <v-container>
                         <v-row>
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
+                              v-model="editedItem.tid"
+                              label="Team Id"
+                              disabled
+                            ></v-text-field
+                          ></v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="editedItem.pid"
+                              label="Player Id"
+                              disabled
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
                               v-model="editedItem.name"
-                              label="player name"
+                              label="Player Name"
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
@@ -57,10 +73,19 @@
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                            <v-select
                               v-model="editedItem.position"
+                              :items="positionList"
                               label="Position"
-                            ></v-text-field>
+                            ></v-select>
+                            <template v-slot:item="{ item, attrs, on }">
+                              <v-list-item v-bind="attrs" v-on="on">
+                                <v-list-item-title
+                                  :id="attrs['aria-labelledby']"
+                                  v-text="item"
+                                ></v-list-item-title>
+                              </v-list-item>
+                            </template>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -79,7 +104,8 @@
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
                     <v-card-title class="text-h5"
-                      >Are you sure you want to delete this item?</v-card-title
+                      >Are you sure you want to delete this
+                      player?</v-card-title
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
@@ -112,14 +138,17 @@
 </template>
 
 <script>
-import { getPlayers } from "../api";
+import {
+  getPlayers/*, addNewPlayer, editplayer, deletePlayer,*/,
+} from "../api";
 export default {
   data() {
     return {
-      // tid: this.$route.params.tid,
+      playerList: [],
       tname: this.$route.params.tname,
       dialog: false,
       dialogDelete: false,
+      editedIndex: -1,
       search: "",
       headers: [
         { text: "Player Id", value: "pid" },
@@ -128,24 +157,51 @@ export default {
         { text: "Position", value: "position" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      playerList: [],
-      editedIndex: -1,
       editedItem: {
+        tid: this.$route.params.tid,
+        pid: "-",
         name: "",
-        age: 0,
+        age: "",
         position: "",
       },
       defaultItem: {
+        tid: this.$route.params.tid,
+        pid: "-",
         name: "",
-        age: 0,
+        age: "",
         position: "",
       },
+      positionList: [
+        "Goalkeeper",
+        "Centre-back",
+        "Sweeper",
+        "Full-back",
+        "Wing-back",
+        "Central-midfielder",
+        "Defensive-midfielder",
+        "Attacking-midfielder",
+        "Wide-midfielder",
+        "Second-striker",
+        "Centre-forward",
+        "Winger",
+      ],
     };
   },
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1
+        ? `New Player to ${this.tname}`
+        : "Edit Information";
+    },
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
     },
   },
 

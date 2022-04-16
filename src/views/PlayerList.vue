@@ -92,16 +92,16 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="close">
+                      <v-btn color="error" text @click="close">
                         Cancel
                       </v-btn>
-                      <v-btn color="blue darken-1" text @click="save()">
+                      <v-btn color="info" text @click="save(editedItem)">
                         Save
                       </v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-                <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-dialog v-model="dialogDelete" max-width="550px">
                   <v-card>
                     <v-card-title class="text-h5"
                       >Are you sure you want to delete this
@@ -109,19 +109,60 @@
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete"
+                      <v-btn color="error" text @click="closeDelete"
                         >Cancel</v-btn
                       >
                       <v-btn
-                        color="blue darken-1"
+                        color="info"
                         text
-                        @click="deleteItemConfirm"
+                        @click="deleteItemConfirm(editedItem.pid)"
                         >OK</v-btn
                       >
                       <v-spacer></v-spacer>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
+                <v-dialog v-model="dialogAlert" persistent max-width="290">
+                  <v-card justify="center">
+                    <v-card-title class="text-h5"> Alert </v-card-title>
+                    <v-card-text
+                      >Somthing went wrong!</v-card-text
+                    >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="error" text @click="dialogAlert = false">
+                        Close
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+                <!-- <v-alert
+                  :value="alert"
+                  color="red"
+                  prominent
+                  dismissible
+                  elevation="20"
+                  type="error"
+                  >Player information cannot be deleted.</v-alert
+                > -->
+
+                <!-- <v-bottom-sheet v-model="sheet" persistent>
+                    <v-sheet class="text-center" height="200px">
+                      <v-icon
+                        class="mt-6"
+                        text
+                        color="error"
+                        @click="sheet = !sheet"
+                      >
+                         mdi-close-circle
+                      </v-icon>
+                      <div class="py-3 text-h5">
+                        Player information cannot be deleted.
+                      </div>
+                    </v-sheet>
+                  </v-bottom-sheet> -->
+
               </v-toolbar>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
@@ -139,7 +180,8 @@
 
 <script>
 import {
-  getPlayers /*, addNewPlayer, editplayer, deletePlayer,*/,
+  getPlayers,
+  deletePlayer, addNewPlayer/*, editplayer*/,
 } from "../api";
 export default {
   data() {
@@ -148,6 +190,9 @@ export default {
       tname: this.$route.params.tname,
       dialog: false,
       dialogDelete: false,
+      dialogAlert: false,
+      // alert: false,
+      // sheet: false,
       editedIndex: -1,
       search: "",
       headers: [
@@ -159,31 +204,23 @@ export default {
       ],
       editedItem: {
         tid: this.$route.params.tid,
-        pid: "Auto-generate",
+        pid: "-",
         name: "",
         age: "",
         position: "",
       },
       defaultItem: {
         tid: this.$route.params.tid,
-        pid: "Auto-generate",
+        pid: "-",
         name: "",
         age: "",
         position: "",
       },
       positionList: [
         "Goalkeeper",
-        "Centre-back",
-        "Sweeper",
-        "Full-back",
-        "Wing-back",
-        "Central-midfielder",
-        "Defensive-midfielder",
-        "Attacking-midfielder",
-        "Wide-midfielder",
-        "Second-striker",
-        "Centre-forward",
-        "Winger",
+        "Defender",
+        "Midfielder",
+        "forward",
       ],
     };
   },
@@ -194,6 +231,17 @@ export default {
         ? `New Player to ${this.tname}`
         : "Edit Information";
     },
+
+    form () {
+        return {
+          name: this.name,
+          address: this.address,
+          city: this.city,
+          state: this.state,
+          zip: this.zip,
+          country: this.country,
+        }
+      },
   },
 
   watch: {
@@ -231,13 +279,23 @@ export default {
       });
     },
 
-    save() {
-      if (this.editedIndex > -1) {
+    async save(data) {
+      if (this.editedIndex !== -1) {
         Object.assign(this.playerList[this.editedIndex], this.editedItem);
       } else {
-        this.playerList.push(this.editedItem);
+        await addNewPlayer(data).then((res) => {
+          console.log(res.data)
+          if (res.status === 200) {
+            this.playerList.push(res.data)
+            this.close();
+          }
+        })
+        .catch((err) => {
+          this.close();
+          console.log(err.response.data)
+          this.dialogAlert = true;
+        });
       }
-      this.close();
     },
 
     closeDelete() {
@@ -248,9 +306,21 @@ export default {
       });
     },
 
-    deleteItemConfirm() {
-      this.playerList.splice(this.editedIndex, 1);
-      this.closeDelete();
+    async deleteItemConfirm(pid) {
+      await deletePlayer(pid)
+        .then((res) => {
+          if (res.status === 200) {
+            this.playerList.splice(this.editedIndex, 1);
+            this.closeDelete();
+          }
+        })
+        .catch((err) => {
+          this.closeDelete();
+          console.log(err.response.data)
+          this.dialogAlert = true;
+          // this.alert = true;
+          // this.sheet = true;
+        });
     },
   },
 };
