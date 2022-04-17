@@ -4,7 +4,7 @@
       <v-img max-height="1080" src="../assets/bg/jimmy-conover.jpg">
         <v-container>
           <v-data-table
-            :headers="headers"
+            :headers="allHeader"
             :items="playerList"
             :items-per-page="15"
             :search="search"
@@ -15,7 +15,7 @@
                   {{ tname }}
                 </v-toolbar-title>
                 <v-divider class="mx-4" inset vertical></v-divider>
-                <v-spacer></v-spacer>
+                <!-- <v-spacer></v-spacer> -->
                 <v-text-field
                   v-model="search"
                   append-icon="mdi-magnify"
@@ -23,6 +23,19 @@
                   single-line
                   hide-details
                 ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <template>
+                  <v-checkbox
+                    v-model="editMode"
+                    label="Edit"
+                    @click="editOpen"
+                  ></v-checkbox
+                ></template>
                 <v-spacer></v-spacer>
                 <v-dialog v-model="dialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
@@ -44,61 +57,66 @@
                     <v-card-text>
                       <v-container>
                         <v-form ref="form" v-model="valid">
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              v-model="editedItem.tid"
-                              label="Team Id"
-                              disabled
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              v-model="editedItem.pid"
-                              label="Player Id"
-                              disabled
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              v-model="editedItem.name"
-                              :rules="rules.empty"
-                              label="Player Name"
-                            ></v-text-field>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              v-model="editedItem.age"
-                              :rules="rules.age"
-                              label="Age"
-                            ></v-text-field>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-select
-                              v-model="editedItem.position"
-                              :rules="rules.empty"
-                              :items="positionList"
-                              label="Position"
-                            ></v-select>
-                            <template v-slot:item="{ item, attrs, on }">
-                              <v-list-item v-bind="attrs" v-on="on">
-                                <v-list-item-title
-                                  :id="attrs['aria-labelledby']"
-                                  v-text="item"
-                                ></v-list-item-title>
-                              </v-list-item>
-                            </template>
-                          </v-col>
-                        </v-row>
+                          <v-row>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                v-model="editedItem.tid"
+                                label="Team Id"
+                                disabled
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                v-model="editedItem.pid"
+                                label="Player Id"
+                                disabled
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                v-model="editedItem.name"
+                                :rules="rules.empty"
+                                label="Player Name"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                v-model="editedItem.age"
+                                :rules="rules.age"
+                                label="Age"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-select
+                                v-model="editedItem.position"
+                                :rules="rules.empty"
+                                :items="positionList"
+                                label="Position"
+                              ></v-select>
+                              <template v-slot:item="{ item, attrs, on }">
+                                <v-list-item v-bind="attrs" v-on="on">
+                                  <v-list-item-title
+                                    :id="attrs['aria-labelledby']"
+                                    v-text="item"
+                                  ></v-list-item-title>
+                                </v-list-item>
+                              </template>
+                            </v-col>
+                          </v-row>
                         </v-form>
                       </v-container>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="error" text @click="close"> Cancel </v-btn>
-                      <v-btn :disabled="!valid" color="info" text @click="save(editedItem)">
+                      <v-btn
+                        :disabled="!valid"
+                        color="info"
+                        text
+                        @click="save(editedItem)"
+                      >
                         Save
                       </v-btn>
                     </v-card-actions>
@@ -110,12 +128,32 @@
                       >Are you sure you want to delete this
                       player?</v-card-title
                     >
+                    <v-card-text>
+                      <v-container>
+                        <v-form ref="form" v-model="deleteMode">
+                          <v-text-field
+                            v-model="editedItem.name"
+                            label="Player name"
+                            disabled
+                          ></v-text-field>
+                          <v-text-field
+                            :rules="rules.pid"
+                            label="Please enter Player Id"
+                          ></v-text-field>
+                          <v-text-field
+                            :rules="rules.confirm"
+                            label="Confirm to Delete"
+                          ></v-text-field>
+                        </v-form>
+                      </v-container>
+                    </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="error" text @click="closeDelete"
                         >Cancel</v-btn
                       >
                       <v-btn
+                        :disabled="!deleteMode"
                         color="info"
                         text
                         @click="deleteItemConfirm(editedItem.pid)"
@@ -166,10 +204,18 @@
               </v-toolbar>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-icon small class="mr-2" @click="editItem(item)">
+              <v-icon
+                small
+                color="grey darken-4"
+                class="mr-2"
+                @click="editItem(item)"
+              >
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+
+              <v-icon small color="red" @click="deleteItem(item)">
+                mdi-delete
+              </v-icon>
             </template>
           </v-data-table>
         </v-container>
@@ -190,16 +236,19 @@ export default {
       dialogAlert: false,
       // alert: false,
       // sheet: false,
+      deleteMode: true,
       valid: true,
       editedIndex: -1,
       search: "",
+      editMode: false,
       headers: [
         { text: "Player Id", value: "pid" },
         { text: "Name", value: "name" },
         { text: "Age", value: "age" },
         { text: "Position", value: "position" },
-        { text: "Actions", value: "actions", sortable: false },
       ],
+      actionHeader: [{ text: "Actions", value: "actions", sortable: false }],
+      allHeader: [],
       editedItem: {
         tid: this.$route.params.tid,
         pid: "-",
@@ -214,10 +263,14 @@ export default {
         age: "",
         position: "",
       },
-      positionList: ["Goalkeeper", "Defender", "Midfielder", "forward"],
+      positionList: ["Goalkeeper", "Defender", "Midfielder", "Forward"],
       rules: {
         empty: [(val) => (val || "").length > 0 || "This field is required"],
-        age: [val => val>0 || 'This field is required']
+        age: [(val) => val > 0 || "This field is required"],
+        confirm: [(val) => val === "Confirm" || "Please Enter 'Confirm'"],
+        pid: [
+          (val) => val === `${this.editedItem.pid}` || "Player Id do not match",
+        ],
       },
     };
   },
@@ -242,6 +295,8 @@ export default {
   async created() {
     const res = await getPlayers(this.$route.params.tid);
     this.playerList = res.data;
+
+    this.allHeader = this.headers;
   },
 
   methods: {
@@ -259,7 +314,7 @@ export default {
 
     close() {
       this.dialog = false;
-      this.$refs.form.reset()
+      this.$refs.form.reset();
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -267,12 +322,12 @@ export default {
     },
 
     async save(data) {
-      this.$refs.form.validate()
+      this.$refs.form.validate();
       if (this.editedIndex !== -1) {
         await editplayer(data).then((res) => {
           if (res.status === 200) {
             Object.assign(this.playerList[this.editedIndex], this.editedItem);
-            this.close()
+            this.close();
           }
         });
       } else {
@@ -293,6 +348,7 @@ export default {
 
     closeDelete() {
       this.dialogDelete = false;
+      this.$refs.form.reset();
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -300,6 +356,7 @@ export default {
     },
 
     async deleteItemConfirm(pid) {
+      this.$refs.form.validate();
       await deletePlayer(pid)
         .then((res) => {
           if (res.status === 200) {
@@ -315,6 +372,15 @@ export default {
           // this.sheet = true;
         });
     },
+
+    editOpen() {
+      if (this.editMode) {
+        this.allHeader = this.headers.concat(this.actionHeader);
+      } else {
+        this.allHeader = this.headers;
+      }
+    },
+
   },
 };
 </script>

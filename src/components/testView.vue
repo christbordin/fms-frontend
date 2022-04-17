@@ -4,7 +4,7 @@
       <v-img max-height="1080" src="../assets/bg/jimmy-conover.jpg">
         <v-container>
           <v-data-table
-            :headers="headers"
+            :headers="allHeader"
             :items="playerList"
             :items-per-page="15"
             :search="search"
@@ -23,6 +23,13 @@
                   single-line
                   hide-details
                 ></v-text-field>
+                <template>
+                  <v-checkbox
+                    v-model="editMode"
+                    :label="`Edit Mode: ${editMode}`"
+                    @click="editOpen"
+                  ></v-checkbox
+                ></template>
                 <v-spacer></v-spacer>
                 <v-dialog v-model="dialog" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
@@ -139,7 +146,7 @@
 
 <script>
 import {
-  getPlayers/*, addNewPlayer, editplayer, deletePlayer,*/,
+  getPlayers /*, addNewPlayer, editplayer, deletePlayer,*/,
 } from "../api";
 export default {
   data() {
@@ -150,13 +157,15 @@ export default {
       dialogDelete: false,
       editedIndex: -1,
       search: "",
+      editMode: false,
       headers: [
         { text: "Player Id", value: "pid" },
         { text: "Name", value: "name" },
         { text: "Age", value: "age" },
         { text: "Position", value: "position" },
-        { text: "Actions", value: "actions", sortable: false },
       ],
+      actionHeader: [{ text: "Actions", value: "actions", sortable: false }],
+      allHeader: [],
       editedItem: {
         tid: this.$route.params.tid,
         pid: "-",
@@ -208,6 +217,7 @@ export default {
   async created() {
     const res = await getPlayers(this.$route.params.tid);
     this.playerList = res.data;
+    this.allHeader = this.headers;
   },
 
   methods: {
@@ -234,8 +244,6 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.playerList[this.editedIndex], this.editedItem);
-        console.log('==========>PlayerList',this.playerList)
-        console.log('==========>editItem',this.editedItem)
       } else {
         this.playerList.push(this.editedItem);
       }
@@ -254,6 +262,15 @@ export default {
       this.playerList.splice(this.editedIndex, 1);
       this.closeDelete();
     },
+
+    editOpen() {
+      if (this.editMode) {
+        this.allHeader = this.headers.concat(this.actionHeader);
+      } else {
+        this.allHeader = this.headers;
+      }
+    },
+    
   },
 };
 </script>

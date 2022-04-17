@@ -15,7 +15,7 @@ const routes = [
     component: () => import("../views/TeamList.vue"),
   },
   {
-    path: "/playerlist/:tid:tname",
+    path: "/playerlist/:tid/:tname",
     name: "playerlist",
     component: () => import("../views/PlayerList.vue"),
   },
