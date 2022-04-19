@@ -42,3 +42,7 @@ export async function editplayer(data) {
 export async function deletePlayer(pid) {
     return await axios.delete(`/deleteplayer/${pid}`)
 }
+
+export async function getPositionList() {
+    return await axios.get('/positions')
+}

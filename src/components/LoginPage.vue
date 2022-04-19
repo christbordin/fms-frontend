@@ -5,37 +5,29 @@
         <h2 class="display-2 font-weight-bold mb-3">
           Football Management System
         </h2>
-        <div class="field">
-          <p class="control has-icons-left has-icons-right">
-            <input
-              class="input"
-              type="email"
-              placeholder="Email"
-              v-model="email"
-            />
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-check"></i>
-            </span>
-          </p>
-        </div>
-        <div class="field">
-          <p class="control has-icons-left">
-            <input
-              class="input"
-              type="password"
-              placeholder="Password"
-              v-model="pass"
-            />
-            <span class="icon is-small is-left">
-              <i class="fas fa-lock"></i>
-            </span>
-          </p>
-        </div>
-        <button class="button is-success" @click="handleLogin">Log in</button>
       </v-container>
+      <div class="form">
+        <form class="form-width" @keyup.enter="handleLogin">
+          <div>
+            <v-text-field v-model="email" label="E-mail" prepend-icon="mdi-account-circle"></v-text-field>
+          </div>
+          <div>
+            <v-text-field
+              v-model="pass"
+              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPass ? 'text' : 'password'"
+              label="Password"
+              prepend-icon="mdi-lock"
+              @click:append="showPass = !showPass"
+            ></v-text-field>
+          </div>
+          <div class="text-center">
+            <v-btn class="mr-4" color="success" @click="handleLogin"
+              >Log in</v-btn
+            >
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </template>
@@ -49,6 +41,7 @@ export default {
     return {
       email: "",
       pass: "",
+      showPass: false,
     };
   },
   methods: {
@@ -81,5 +74,14 @@ export default {
 .field {
   margin-left: 300px;
   margin-right: 300px;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+}
+
+.form-width {
+  width: 35rem;
 }
 </style>

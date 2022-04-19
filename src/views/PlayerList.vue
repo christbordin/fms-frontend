@@ -225,7 +225,7 @@
 </template>
 
 <script>
-import { getPlayers, deletePlayer, addNewPlayer, editplayer } from "../api";
+import { getPlayers, deletePlayer, addNewPlayer, editplayer, getPositionList } from "../api";
 export default {
   data() {
     return {
@@ -263,7 +263,7 @@ export default {
         age: "",
         position: "",
       },
-      positionList: ["Goalkeeper", "Defender", "Midfielder", "Forward"],
+      positionList: [],
       rules: {
         empty: [(val) => (val || "").length > 0 || "This field is required"],
         age: [(val) => val > 0 || "This field is required"],
@@ -293,8 +293,10 @@ export default {
   },
 
   async created() {
-    const res = await getPlayers(this.$route.params.tid);
-    this.playerList = res.data;
+    const player = await getPlayers(this.$route.params.tid);
+    this.playerList = player.data;
+    const position = await getPositionList()
+    this.positionList = position.data
 
     this.allHeader = this.headers;
   },
@@ -380,7 +382,6 @@ export default {
         this.allHeader = this.headers;
       }
     },
-
   },
 };
 </script>
