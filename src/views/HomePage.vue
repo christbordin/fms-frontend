@@ -8,7 +8,7 @@
       </v-app-bar>
       <v-main>
         <HomeContent />
-        <LoginPage />
+        <LoginCard />
       </v-main>
     </v-app>
   </div>
@@ -16,10 +16,10 @@
 
 <script>
 import HomeContent from "../components/HomeContent.vue";
-import LoginPage from "../components/LoginPage.vue";
+import LoginCard from "../components/LoginCard.vue";
 export default {
   components: {
-    LoginPage,
+    LoginCard,
     HomeContent,
   },
 };

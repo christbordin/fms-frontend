@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/teamlist/:uid",
     name: "teamlist",
-    component: () => import("../views/TeamList.vue"),
+    component: () => import("../components/TeamCard.vue"),
   },
   {
     path: "/playerlist/:tid/:tname",

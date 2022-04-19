@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <v-main>
+      <ToolbarTitle />
       <v-img max-height="1080" src="../assets/bg/jimmy-conover.jpg">
+      <div>
         <v-container>
           <v-data-table
             :headers="allHeader"
@@ -219,6 +221,7 @@
             </template>
           </v-data-table>
         </v-container>
+        </div>
       </v-img>
     </v-main>
   </v-app>
@@ -226,7 +229,12 @@
 
 <script>
 import { getPlayers, deletePlayer, addNewPlayer, editplayer, getPositionList } from "../api";
+import ToolbarTitle from "../components/ToolbarTitle.vue";
 export default {
+  components: {
+    ToolbarTitle,
+  },
+
   data() {
     return {
       playerList: [],
@@ -382,9 +390,21 @@ export default {
         this.allHeader = this.headers;
       }
     },
+
+    // itemRowBackground() {
+    //   for (let i = 0; i < this.playerList.length; i++) {
+    //     console.log(i)
+    //     if (i%2 == 0) {
+    //       return 'row-color'
+    //     }
+    //   }
+    // }
   },
 };
 </script>
 
 <style>
+.row-color {
+  background-color: #CDEFFF;
+}
 </style>
