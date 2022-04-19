@@ -390,21 +390,15 @@ export default {
         this.allHeader = this.headers;
       }
     },
-
-    // itemRowBackground() {
-    //   for (let i = 0; i < this.playerList.length; i++) {
-    //     console.log(i)
-    //     if (i%2 == 0) {
-    //       return 'row-color'
-    //     }
-    //   }
-    // }
   },
 };
 </script>
 
 <style>
-.row-color {
+.blue-color {
   background-color: #CDEFFF;
+}
+.white-color {
+  background-color: white;
 }
 </style>
