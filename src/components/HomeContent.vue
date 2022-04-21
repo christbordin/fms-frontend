@@ -27,7 +27,10 @@
                 </span>
               </v-col>
 
-              <v-btn x-large @click="$vuetify.goTo('#login')">
+              <v-btn x-large @click="$vuetify.goTo('#login')" v-if="isLoggedIn">
+                <v-icon>mdi-chevron-double-down</v-icon>
+              </v-btn>
+              <v-btn x-large @click="$vuetify.goTo('#login')" v-else>
                 Login <v-icon>mdi-chevron-double-down</v-icon>
               </v-btn>
             </v-row>
@@ -41,6 +44,13 @@
 <script>
 export default {
   name: "HomeContent",
+
+  computed: {
+    isLoggedIn() {
+      return localStorage.length
+    },
+  },
+  
 };
 </script>
 

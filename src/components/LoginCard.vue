@@ -6,7 +6,13 @@
           Football Management System
         </h2>
       </v-container>
-      <div class="form">
+      <div style="text-align: center" v-if="isLoggedIn">
+        <h3 class="display-1 mb-3">Hi, {{ name.data.name }}</h3>
+        <hr />
+        <v-btn outlined @click="teamPage">Team List</v-btn> |
+        <v-btn outlined @click="handleLogout">Log out</v-btn>
+      </div>
+      <div class="form" v-else>
         <v-card class="card-form">
           <form class="form-width" @keyup.enter="handleLogin">
             <div>
@@ -41,6 +47,7 @@
 </template>
 
 <script>
+import router from "@/router";
 import { login } from "../api";
 export default {
   name: "LoginCard",
@@ -49,11 +56,23 @@ export default {
     return {
       email: "",
       pass: "",
+      name: "",
       showPass: false,
       passError: "",
       emailError: "",
     };
   },
+
+  created() {
+    this.name = JSON.parse(localStorage.getItem("user"));
+  },
+
+  computed: {
+    isLoggedIn() {
+      return localStorage.length;
+    },
+  },
+
   methods: {
     async handleLogin() {
       const { email, pass } = this;
@@ -64,7 +83,6 @@ export default {
       await login(loginInfo)
         .then((res) => {
           if (res.status === 200) {
-            localStorage.setItem('name', res.data.name)
             this.$router.push({
               name: "teamlist",
               params: {
@@ -81,6 +99,16 @@ export default {
             this.emailError = err.response.data.message;
           }
         });
+    },
+    handleLogout() {
+      localStorage.clear();
+      location.reload();
+    },
+
+    teamPage() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const uid = user.data.uid;
+      router.push(`/teamlist/${uid}`);
     },
   },
 };

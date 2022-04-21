@@ -68,13 +68,12 @@ export default {
   },
 
   async created() {
-    const res = await getTeams(this.$route.params.uid);
+    const res = await getTeams();
     if (res.status === 200) {
       this.teamList = res.data;
     }
-
-    this.name = localStorage.getItem("name");
   },
+  
   methods: {
     toPlayerList(tid, tname, uid) {
       this.$router.push({
@@ -84,9 +83,6 @@ export default {
           tname: tname,
           uid: uid,
         },
-        // props: {
-        //   tname: tname
-        // }
       });
     },
   },

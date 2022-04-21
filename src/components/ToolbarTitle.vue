@@ -1,7 +1,11 @@
 <template>
   <v-toolbar dark rounded>
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
-    <v-toolbar-title>Hi, {{ name }}</v-toolbar-title>
+    <div>
+      <v-btn class="ma-5" outlined @click="goBack">
+        <v-icon left> mdi-arrow-left </v-icon>Back
+      </v-btn>
+    </div>
+    <v-toolbar-title class="ma-8">Hi, {{ name.data.name }}</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
@@ -21,7 +25,7 @@ export default {
   },
 
   created() {
-    this.name = localStorage.getItem("name");
+    this.name = JSON.parse(localStorage.getItem("user"));
   },
 
   methods: {
@@ -31,6 +35,10 @@ export default {
         name: "home",
       });
     },
+
+    goBack() {
+      history.back()
+    }
   },
 };
 </script>
